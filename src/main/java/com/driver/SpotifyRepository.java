@@ -326,16 +326,9 @@ public class SpotifyRepository {
 
         }
 
-        //if user is a creator.
-        if(creatorPlaylistMap.containsKey(userNeeded)){
-
-            if(creatorPlaylistMap.get(userNeeded).equals(playlistNeeded)){
-                return playlistNeeded;
-            }
-        }
-
         //adding user.
         playlistListenerMap.get(playlistNeeded).add(userNeeded);
+        userPlaylistMap.get(userNeeded).add(playlistNeeded);
 
         return playlistNeeded;
     }
