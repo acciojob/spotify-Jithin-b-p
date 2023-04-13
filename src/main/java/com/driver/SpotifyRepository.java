@@ -70,6 +70,18 @@ public class SpotifyRepository {
 
     public Album createAlbum(String title, String artistName) {
 
+        //if album already exists.
+        for(Album album: albums){
+
+            if(album.getTitle().equals(title)){
+
+                return album;
+
+            }
+
+        }
+
+        //checking if the artist exists.
         boolean artistExist = false;
         Artist artistNeeded = null;
         for(Artist artist: artists){
@@ -85,18 +97,9 @@ public class SpotifyRepository {
         if(!artistExist){
 
             artistNeeded = new Artist(artistName);
+            artists.add(artistNeeded);
             artistAlbumMap.put(artistNeeded, new ArrayList<>());
 
-        }
-
-        //if album already exist.
-        for(Album album: albums){
-
-            if(album.getTitle().equals(title)){
-
-                return album;
-
-            }
         }
 
         //adding album.
@@ -132,13 +135,13 @@ public class SpotifyRepository {
 
         Song song = new Song(title, length);
 
+        //add song.
         songs.add(song);
 
+        //add song to album.
+        albumSongMap.get(albumNeeded).add(song);
 
-        List<Song> songs = albumSongMap.get(albumNeeded);
-        songs.add(song);
-
-        albumSongMap.put(albumNeeded, songs);
+        //song liked user map
         songLikeMap.put(song, new ArrayList<>());
 
         return song;
@@ -146,6 +149,16 @@ public class SpotifyRepository {
     }
 
     public Playlist createPlaylistOnLength(String mobile, String title, int length) throws Exception {
+
+        //if playList already exists.
+        for(Playlist playlist: playlists){
+
+            if(playlist.getTitle().equals(title)){
+
+                return playlist;
+
+            }
+        }
 
         //find user.
         boolean userExist = false;
@@ -180,6 +193,10 @@ public class SpotifyRepository {
         userPlaylistMap.put(creatorOfPlaylist, new ArrayList<>());
         userPlaylistMap.get(creatorOfPlaylist).add(playlist);
 
+        //adding current listener(creator)
+        playlistListenerMap.put(playlist, new ArrayList<>());
+        playlistListenerMap.get(playlist).add(creatorOfPlaylist);
+
         List<Song> songsList = new ArrayList<>();
         //adding songs.
         for(Song song: songs){
@@ -197,6 +214,16 @@ public class SpotifyRepository {
     }
 
     public Playlist createPlaylistOnName(String mobile, String title, List<String> songTitles) throws Exception {
+
+        //if playList already exists.
+        for(Playlist playlist: playlists){
+
+            if(playlist.getTitle().equals(title)){
+
+                return playlist;
+
+            }
+        }
 
         //getting user.
         boolean userExist = false;
@@ -229,6 +256,10 @@ public class SpotifyRepository {
         //user playList mapping.
         userPlaylistMap.put(creatorOfPlaylist, new ArrayList<>());
         userPlaylistMap.get(creatorOfPlaylist).add(playlist);
+
+        //adding current listener(creator)
+        playlistListenerMap.put(playlist, new ArrayList<>());
+        playlistListenerMap.get(playlist).add(creatorOfPlaylist);
 
         //adding songs to playlist.
         List<Song> songsList = new ArrayList<>();
